@@ -8,6 +8,7 @@ const { storeFilesLocally } = require("./utils/aws");
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
+const storyRoutes = require("./routes/storyRoutes");
 
 require("dotenv").config();
 
@@ -17,20 +18,21 @@ const port = 4000;
 
 app.use(express.json()); 
 app.use(cookieParser()); 
-
-
-app.use("/api/auth", authRoutes);
-
-app.get("/", (req, res) => {
-    res.send("Jai kara sherawali da bol saache darbar ki Jai!✨");
-});
-
 connectDB();
 
 const uploadsDir = path.join(__dirname, "uploads");
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir);
 }
+
+app.use("/api/auth", authRoutes);
+app.use("/api/stories", storyRoutes);
+
+app.get("/", (req, res) => {
+    res.send("Jai kara sherawali da bol saache darbar ki Jai!✨");
+});
+
+
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
