@@ -1,4 +1,5 @@
 const mongoose=require('mongoose');
+const { model } = mongoose;
 
 const PostSchema= new mongoose.Schema({
     title: String,

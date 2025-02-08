@@ -1,4 +1,5 @@
 import { API } from "./backend";
+import { toast } from 'react-toastify';  // Import toast
 
 export const uploadData = async (formData) => {
     try {
@@ -52,3 +53,51 @@ export const deleteImage = (ImageId) => {
         .then((data) => console.log("Image deleted successfully:", data))
         .catch((err) => console.error("Error deleting image:", err));
 };
+
+// export const createAlbum = async (albumData/*, token*/) => {
+//     try {
+//         // if (!token) {
+//         //     throw new Error("Authorization token is missing");
+//         // }
+//         // const headers = {
+//         //     Authorization: `Bearer ${token}`,
+//         // };
+
+//         const formData = new FormData();
+//         for (const key in albumData) {
+//             if (albumData[key] !== undefined && albumData[key] !== null) {
+//                 formData.append(key, albumData[key]);
+//             }
+//         }
+
+//         for (let pair of formData.entries()) {
+//             console.log(`${pair[0]}:${pair[1]}`);
+//         }
+
+//         const response = await fetch(`${API}albums/create`, {
+//             method: "POST",
+//             // headers,
+//             body: formData,
+//         });
+//         if (!response.ok) {
+//             const errorData = await response.json();
+
+//             if (errorData.error === "jwt expired") {
+//                 // Handle token expiration, prompt login or refresh token
+//                 // localStorage.removeItem("token");
+//                 toast.error("Session expired. Please log in again.");
+//                 // Redirect to login or attempt to refresh the token
+//                 window.location.href = "/login"; // You can replace "/login" with your login route
+//             }
+//             throw new Error(errorData.message || "Failed to create album");
+//         }
+
+//         return await response.json();
+//     } catch (error) {
+//         console.error("Error preserving your keepsakes: ", error);
+//         return {
+//             error:
+//                 error.message || "Failed to preserve your keepsakes",
+//         };
+//     }
+// };
