@@ -10,6 +10,7 @@ const cors = require("cors");
 const path = require("path");
 const postRoutes = require("./routes/postRoute");
 const fs = require("fs");
+const storyRoutes = require("./routes/storyRoutes");
 
 require("dotenv").config();
 
@@ -34,6 +35,15 @@ const uploadsDir = path.join(__dirname, "uploads");
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir);
 }
+
+app.use("/api/auth", authRoutes);
+app.use("/api/stories", storyRoutes);
+
+app.get("/", (req, res) => {
+    res.send("Jai kara sherawali da bol saache darbar ki Jai!✨");
+});
+
+
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
