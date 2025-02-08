@@ -6,7 +6,9 @@ const authRoutes = require("./routes/authRoute");
 const connectDB = require("./utils/database");
 const { storeFilesLocally } = require("./utils/aws");
 const multer = require("multer");
+const cors = require("cors");
 const path = require("path");
+const postRoutes = require("./routes/postRoute");
 const fs = require("fs");
 
 require("dotenv").config();
@@ -17,9 +19,10 @@ const port = 4000;
 
 app.use(express.json()); 
 app.use(cookieParser()); 
-
+app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 
 app.use("/api/auth", authRoutes);
+app.use("/post", postRoutes);
 
 app.get("/", (req, res) => {
     res.send("Jai kara sherawali da bol saache darbar ki Jai!✨");

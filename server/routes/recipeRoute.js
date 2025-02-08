@@ -10,16 +10,11 @@ const {
 
 const router = express.Router();
 
-router.post("/", createRecipe);
-
 router.get("/", getAllRecipes);
-
+router.post("/", createRecipe);
 router.get("/:id", getRecipeById);
-
 router.put("/:id", updateRecipe);
-
 router.delete("/:id", deleteRecipe);
-
 router.post("/:id/rate", rateRecipe);
 
 module.exports = router;

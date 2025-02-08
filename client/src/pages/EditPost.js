@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useEffect, useState, useContext} from "react";
 import {Navigate, useParams} from "react-router-dom";
 import Editor from "../Editor";
 
@@ -19,7 +19,7 @@ export default function EditPost() {
           setSummary(postInfo.summary);
         });
       });
-  }, [id]);
+  }, []);
 
   async function updatePost(ev) {
     ev.preventDefault();
