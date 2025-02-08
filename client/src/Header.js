@@ -82,6 +82,7 @@ export default function Header() {
                     <>
                         <Link to="/create">Create new post</Link>
                         <Link to="/gallery">Public Gallery</Link>
+                        <Link to="/stories">Story</Link>
                         <div
                             className="dropdown"
                             onClick={() => setDropdownOpen(!dropdownOpen)}

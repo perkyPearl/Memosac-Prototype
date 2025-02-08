@@ -10,6 +10,7 @@ import Gallery from "./pages/Gallery";
 import CreatePost from "./pages/CreatePost";
 import PostPage from "./pages/PostPage";
 import EditPost from "./pages/EditPost";
+import StoryPage from "./pages/StoryPage";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path="/create" element={<CreatePost />} />
           <Route path="/post/:id" element={<PostPage />} />
           <Route path="/edit/:id" element={<EditPost />} />
+          <Route path="/stories" element={<StoryPage />} />
         </Route>
       </Routes>
     </UserContextProvider>
