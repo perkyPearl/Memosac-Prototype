@@ -25,26 +25,38 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.5); /* Dark background with transparency */
-  z-index: 1000; /* Ensure it appears on top of other content */
+  background-color: rgba(0, 0, 0, 0.5);
+  /* Dark background with transparency */
+  z-index: 1000;
+  /* Ensure it appears on top of other content */
 }
 
 .progress-circle {
-  width: 80px; /* Size of the circular loader */
+  width: 80px;
+  /* Size of the circular loader */
   height: 80px;
-  border: 8px solid #f3f3f3; /* Light background color */
-  border-top: 8px solid #3498db; /* Color of the spinner */
-  border-radius: 50%; /* Makes it circular */
-  animation: spin 1s linear infinite; /* Rotate animation */
+  border: 8px solid #f3f3f3;
+  /* Light background color */
+  border-top: 8px solid #3498db;
+  /* Color of the spinner */
+  border-radius: 50%;
+  /* Makes it circular */
+  animation: spin 1s linear infinite;
+  /* Rotate animation */
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .image-container {
-  grid-row-end:span calc(var(--row-span));
+  grid-row-end: span calc(var(--row-span));
   /* width: 100%; */
   /* height: auto; */
   position: relative;
@@ -58,18 +70,21 @@
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-.image-container img{
+
+.image-container img {
   display: block;
-  width: 100%;;
-  height:auto;
+  width: 100%;
+  ;
+  height: auto;
   object-fit: cover;
   border-radius: 12px;
   transition: filter 0.3s ease;
 }
+
 .image-container:hover {
   transform: translateY(-5px) scale(1.05);
   box-shadow: 0 10px 20px rgb(4, 4, 4);
-  filter:brightness(0.75);
+  filter: brightness(0.75);
 }
 
 .model {
@@ -80,7 +95,7 @@
   height: 100%;
   backdrop-filter: blur(10px);
   background-color: rgba(0, 0, 0, 0.7);
-  backdrop-filter:grayscale(75%);
+  backdrop-filter: grayscale(75%);
   z-index: 1000;
   display: flex;
   justify-content: center;
@@ -112,21 +127,26 @@
   justify-content: center;
   align-items: center;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1000; 
+  z-index: 1000;
 }
 
 .progress-circle {
-  width: 80px; 
+  width: 80px;
   height: 80px;
   border: 8px solid #f3f3f3;
   border-top: 8px solid #3498db;
-  border-radius: 50%; 
+  border-radius: 50%;
   animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .progress-spinner {
@@ -172,27 +192,95 @@
   transform: scale(1.05);
 }
 
-.delete-btn{
+.delete-btn {
   position: relative;
   bottom: 8px;
-  left:50%;
-  background-color: rgba(255,255,255,0.8) !important;
+  left: 50%;
+  background-color: rgba(255, 255, 255, 0.8) !important;
   color: black !important;
   border: none !important;
-  font-size:1.2rem;
+  font-size: 1.2rem;
   cursor: pointer;
   /* padding: 5px 10px; */
   border-radius: 4px;
-  opacity:0;
+  opacity: 0;
   transition: opacity 0.3s ease, transform 0.3s ease;
-  z-index:2;
+  z-index: 2;
 }
-.image-container:hover .delete-btn{
+
+.image-container:hover .delete-btn {
   opacity: 1;
   transform: translateX(-50%) translateY(-5px);
 }
-.delete-btn:hover{
+
+.delete-btn:hover {
   background-color: red !important;
   color: white;
   transform: scale(1.1);
+}
+
+.gallery-container {
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+  text-align: center;
+}
+
+.upload-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.upload-form input,
+.upload-form textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.upload-form button {
+  padding: 10px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.upload-form button:hover {
+  background-color: #45a049;
+}
+
+.image-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.image-card {
+  width: 200px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.image-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+.image-card h3 {
+  margin: 10px 0;
+  font-size: 18px;
+}
+
+.image-card p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #555;
 }

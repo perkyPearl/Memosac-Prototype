@@ -2,16 +2,17 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const dotenv = require("dotenv");
-const authRoutes = require("./routes/authRoute"); 
+const authRoutes = require("./routes/authRoute");
 const connectDB = require("./utils/database");
-const { storeFilesLocally } = require("./utils/aws");
 const multer = require("multer");
 const cors = require("cors");
 const path = require("path");
+const timeCapsuleRoutes = require("./routes/timeCapsules");
 const postRoutes = require("./routes/postRoute");
 const fs = require("fs");
 const storyRoutes = require("./routes/storyRoutes");
 const galleryRoutes = require("./routes/galleryRoutes");
+const checkScheduledDate = require("./middlewares/checkScheduledDate");
 require("dotenv").config();
 
 dotenv.config();
@@ -22,16 +23,17 @@ app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
-app.use(express.json()); 
-app.use(cookieParser()); 
-app.use(cors({ origin: "http://localhost:3000", credentials: true }));
-app.use("/uploads", express.static(path.join(__dirname, "uploads"))); // ✅ Serves uploaded images
+app.use(express.json());
+app.use(cookieParser());
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/api/auth", authRoutes);
 app.use("/post", postRoutes);
 app.use("/api", galleryRoutes);
+app.use("/api/stories", storyRoutes);
+app.use("/timecapsule", timeCapsuleRoutes);
 
 app.get("/", (req, res) => {
-    res.send("Jai kara sherawali da bol saache darbar ki Jai!✨");
+  res.send("Jai kara sherawali da bol saache darbar ki Jai!✨");
 });
 
 connectDB();
@@ -45,7 +47,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/stories", storyRoutes);
 
 app.get("/", (req, res) => {
-    res.send("Jai kara sherawali da bol saache darbar ki Jai!✨");
+  res.send("Jai kara sherawali da bol saache darbar ki Jai!✨");
 });
 
 app.get("/profile", (req, res) => {
@@ -58,6 +60,11 @@ app.get("/profile", (req, res) => {
       return res.status(403).json({ message: "Invalid or expired token" });
     res.json(info);
   });
+});
+
+app.get("/uploads/:id/:filename", checkScheduledDate, (req, res) => {
+  const filePath = path.join(__dirname, "uploads", req.params.filename);
+  res.download(filePath);
 });
 
 app.listen(port, () => {

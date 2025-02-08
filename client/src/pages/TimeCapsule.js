@@ -15,7 +15,6 @@ const ProgressBar = ({ progress }) => {
 const TimeCapsule = () => {
   const { userInfo } = useContext(UserContext);
   const [files, setFiles] = useState([]);
-  const [uploadProgress, setUploadProgress] = useState({});
   const [releaseDate, setReleaseDate] = useState('2024-12-01');
   const [releaseTime, setReleaseTime] = useState('12:00');
   const [title, setTitle] = useState('Some Audio');
@@ -24,7 +23,6 @@ const TimeCapsule = () => {
   const handleFileChange = (event) => {
     const selectedFiles = Array.from(event.target.files);
     setFiles((prevFiles) => [...prevFiles, ...selectedFiles]);
-    setUploadProgress({});
   };
 
   const handleReleaseDateChange = (event) => {
@@ -40,63 +38,39 @@ const TimeCapsule = () => {
   };
 
   const handleFileUpload = () => {
-    if (!releaseDate || !releaseTime || !title) {
-      toast.error('Please select a release date, time, and title!');
+    if (!releaseDate || !releaseTime || !title || files.length === 0) {
+      toast.error('Please select files, a release date, time, and title!');
       return;
     }
 
     const fullReleaseDateTime = `${releaseDate} ${releaseTime}`;
-    const uploadPromises = files.map((file) => uploadFile(file, fullReleaseDateTime));
 
-    Promise.all(uploadPromises)
-      .then(() => {
-        toast.success(`Upload complete! Time Capsule titled "${title}" will open on ${fullReleaseDateTime}`);
-      })
-      .catch((error) => {
-        console.error('Upload error:', error);
-        toast.error('Upload failed. Please try again.');
-      });
-  };
-
-  const uploadFile = (file, releaseDateTime) => {
+    // Create FormData object
     const formData = new FormData();
-    formData.append('files', file);
-    formData.append('releaseDateTime', releaseDateTime);
-    formData.append('title', title);
-    formData.append('userId',userInfo.id);
-
-    return new Promise((resolve, reject) => {
-      const xhr = new XMLHttpRequest();
-      xhr.open('POST', 'http://localhost:4000/timecapsule', true);
-
-      xhr.upload.onprogress = (event) => {
-        if (event.lengthComputable) {
-          const percentComplete = Math.round((event.loaded / event.total) * 100);
-          setUploadProgress((prevProgress) => ({
-            ...prevProgress,
-            [file.name]: percentComplete,
-          }));
-        }
-      };
-
-      xhr.onload = () => {
-        if (xhr.status === 200 || xhr.status === 201) {
-          resolve(xhr.response);
-          setUploadProgress((prevProgress) => ({
-            ...prevProgress,
-            [file.name]: 100,
-          }));
-        } else {
-          reject(new Error(`Upload failed: ${xhr.status} ${xhr.statusText}`));
-        }
-      };
-
-      xhr.onerror = () => {
-        reject(new Error('Upload failed: Network error'));
-      };
-
-      xhr.send(formData);
+    files.forEach((file) => {
+      formData.append('files', file);
     });
+    formData.append('releaseDateTime', fullReleaseDateTime);
+    formData.append('title', title);
+    formData.append('userId', userInfo.id);
+
+    // Send all data at once
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', 'http://localhost:4000/timecapsule', true);
+
+    xhr.onload = () => {
+      if (xhr.status === 200 || xhr.status === 201) {
+        toast.success(`Upload complete! Time Capsule titled "${title}" will open on ${fullReleaseDateTime}`);
+      } else {
+        toast.error('Upload failed. Please try again.');
+      }
+    };
+
+    xhr.onerror = () => {
+      toast.error('Upload failed: Network error');
+    };
+
+    xhr.send(formData);
   };
 
   const handleDragOver = (event) => {
@@ -155,10 +129,7 @@ const TimeCapsule = () => {
           <h3>Files Selected:</h3>
           <ul>
             {files.map((file, index) => (
-              <li key={index}>
-                {file.name} - {uploadProgress[file.name] || 0}%
-                <ProgressBar progress={uploadProgress[file.name] || 0} />
-              </li>
+              <li key={index}>{file.name}</li>
             ))}
           </ul>
         </div>
