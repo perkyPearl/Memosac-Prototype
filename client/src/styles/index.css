@@ -12,6 +12,10 @@ code {
     monospace;
 }
 
+html, body, #root {
+    height: 100%;
+}
+
 .no-posts-container{
   display: flex;
   flex-direction: column;
@@ -68,4 +72,8 @@ code {
 
 .floating-button:hover {
   background-color: #4b00ad;
+}
+
+.create-story-container {
+    height: 100%;
 }

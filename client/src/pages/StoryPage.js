@@ -25,27 +25,55 @@ const StoryPage = () => {
             prevIndex + 1 < stories.length ? prevIndex + 1 : 0
         );
     };
+    const handlePreviousStory = () => {
+        setCurrentStoryIndex((prevIndex) =>
+            prevIndex - 1 >= 0 ? prevIndex - 1 : stories.length - 1
+        );
+    };
+    const handleStoryCreated = (newStory) => {
+        setStories((prev) => [newStory, ...prev]); // ✅ Add new story to the list
+        setShowCreateForm(false); // ✅ Close popup after creation
+    };
 
     return (
         <div className="story-container">
-            <h2>📖 Storytelling</h2>
-            <button
-                className="create-story-btn"
-                onClick={() => setShowCreateForm(!showCreateForm)}>
-                {showCreateForm ? "Close" : "Create Story"}
-            </button>
+            <div class="plusalign">
+                <h2>📖 Storytelling</h2>
+                <button
+                    className="plus-icon"
+                    onClick={() => setShowCreateForm(true)}>
+                    ➕
+                </button>
+            </div>
 
-            {showCreateForm && <CreateStory setStories={setStories} />}
+            {showCreateForm && (
+                <div className="popup-overlay">
+                    <div className="popup-content">
+                        <button
+                            className="close-popup"
+                            onClick={() => setShowCreateForm(false)}>
+                            ✖
+                        </button>
+                        <CreateStory setStories={handleStoryCreated} />
+                    </div>
+                </div>
+            )}
 
             {stories.length > 0 ? (
-                <>
+                <div className="story-wrapper">
+                    {/* Left Arrow Button */}
+                    <button
+                        className="arrow-button left-arrow"
+                        onClick={handlePreviousStory}>
+                        ⬅
+                    </button>
                     <StoryCard story={stories[currentStoryIndex]} />
                     <button
-                        className="next-story-btn"
+                        className="arrow-button right-arrow"
                         onClick={handleNextStory}>
-                        Next Story ➡️
+                        ➡
                     </button>
-                </>
+                </div>
             ) : (
                 <p>No stories available. Start by creating one!</p>
             )}

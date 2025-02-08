@@ -1,15 +1,19 @@
 import React, { useState } from "react";
 import "../styles/StoryCard.css";
 import "../styles/story.css";
+
 const StoryCard = ({ story }) => {
     const [isFlipped, setIsFlipped] = useState(false);
 
     console.log("Media Path:", story.media); // ✅ Debugging Line
     console.log("Description:", story.description); // ✅ Debugging Line
 
-    const imageUrl = story.media.startsWith("/uploads")
-        ? `http://localhost:4000${story.media}` // Fix: Add Backend URL
-        : story.media;
+    const imageUrl =
+        story.media &&
+        typeof story.media === "string" &&
+        story.media.startsWith("/uploads")
+            ? `http://localhost:4000${story.media}` // Fix: Add Backend URL
+            : story.media;
 
     return (
         <div
@@ -20,7 +24,6 @@ const StoryCard = ({ story }) => {
                     <img
                         src={imageUrl}
                         alt="Story"
-                        
                         onError={(e) =>
                             (e.target.src =
                                 "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaqyEspSKOyAok-FhWNMqoYGTRi6vswnE99w&s")
