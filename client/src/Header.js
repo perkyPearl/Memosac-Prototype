@@ -1,12 +1,13 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState,useRef } from "react";
 import { UserContext } from "./UserContext";
 import "./styles/App.css";
 
 export default function Header() {
   const { setUserInfo, userInfo } = useContext(UserContext);
   const navigate = useNavigate();
-  const [dropdownOpen, setDropdownOpen] = useState(true);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
     fetch("http://localhost:4000/profile", {
@@ -52,6 +53,22 @@ export default function Header() {
     }
   }
 
+   useEffect(() => {
+       function handleClickOutside(event) {
+           if (
+               dropdownRef.current &&
+               !dropdownRef.current.contains(event.target)
+           ) {
+               setDropdownOpen(false);
+           }
+       }
+
+       document.addEventListener("mousedown", handleClickOutside);
+       return () => {
+           document.removeEventListener("mousedown", handleClickOutside);
+       };
+   }, []);
+
   return (
     <header className="NavBar">
       <div
@@ -64,16 +81,16 @@ export default function Header() {
 
       <nav>
 
-                {username !== "Default username" ? (
+                {username ? (
                     <>
-                    <Link to="/timecapsule">Time</Link>
+                    <Link to="/timecapsule">Time Capsule</Link>
                         <Link to="/create">Posts</Link>
                         <Link to="/gallery">Public Gallery</Link>
                         <Link to="/stories">Story</Link>
                         <div
                             className="dropdown"
                             onClick={() => setDropdownOpen(!dropdownOpen)}
-                            ref={dropdownRef} // Correct use of ref
+                            ref={dropdownRef} 
                             style={{ cursor: "pointer" }}>
                             <span>
                                 Hey, <b>{username}</b>

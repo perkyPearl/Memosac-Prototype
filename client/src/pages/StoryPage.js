@@ -6,11 +6,16 @@ import CreateStory from "../components/CreateStory";
 const StoryPage = () => {
     const [stories, setStories] = useState([]);
     const [currentStoryIndex, setCurrentStoryIndex] = useState(0);
+    const [showCreateForm, setShowCreateForm] = useState(false);
 
     useEffect(() => {
         const fetchStories = async () => {
-            const data = await getStories();
-            setStories(data);
+            try {
+                const data = await getStories();
+                setStories(data);
+            } catch (error) {
+                console.error("❌ Error fetching stories:", error);
+            }
         };
         fetchStories();
     }, []);
@@ -24,12 +29,25 @@ const StoryPage = () => {
     return (
         <div className="story-container">
             <h2>📖 Storytelling</h2>
-            <CreateStory setStories={setStories} />
-            {stories.length > 0 && (
+            <button
+                className="create-story-btn"
+                onClick={() => setShowCreateForm(!showCreateForm)}>
+                {showCreateForm ? "Close" : "Create Story"}
+            </button>
+
+            {showCreateForm && <CreateStory setStories={setStories} />}
+
+            {stories.length > 0 ? (
                 <>
                     <StoryCard story={stories[currentStoryIndex]} />
-                    <button onClick={handleNextStory}>Next Story ➡️</button>
+                    <button
+                        className="next-story-btn"
+                        onClick={handleNextStory}>
+                        Next Story ➡️
+                    </button>
                 </>
+            ) : (
+                <p>No stories available. Start by creating one!</p>
             )}
         </div>
     );
