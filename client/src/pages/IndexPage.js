@@ -15,7 +15,7 @@ export default function IndexPage() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        let url = 'http://localhost:4000/posts';
+        let url = 'http://localhost:4000/post';
         let options = {
           method: 'POST',
           credentials: 'include',

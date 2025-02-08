@@ -17,6 +17,10 @@ require("dotenv").config();
 dotenv.config();
 const app = express();
 const port = 4000;
+app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 
 app.use(express.json()); 
 app.use(cookieParser()); 
@@ -44,10 +48,17 @@ app.get("/", (req, res) => {
     res.send("Jai kara sherawali da bol saache darbar ki Jai!✨");
 });
 
+app.get("/profile", (req, res) => {
+  const { token } = req.cookies;
 
+  if (!token) return res.status(401).json({ message: "No token provided" });
 
-const storage = multer.memoryStorage();
-const upload = multer({ storage });
+  jwt.verify(token, process.env.Secret, (err, info) => {
+    if (err)
+      return res.status(403).json({ message: "Invalid or expired token" });
+    res.json(info);
+  });
+});
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);

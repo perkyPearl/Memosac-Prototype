@@ -43,7 +43,7 @@ const loginUser = async (req, res) => {
 };
 
 const registerUser = async (req, res) => {
-    const { username, email, password } = req.body;
+  const { username, email, password } = req.body;
 
   if (!username || !email || !password) {
     return res.status(400).json({ message: "All fields are required" });
@@ -90,7 +90,7 @@ const googlelogin = async (req, res, next) => {
         });
         await user.save();
         }
-    
+        
         const token = jwt.sign({ username, id: user._id }, secret, {
         expiresIn: "7d",
         });
