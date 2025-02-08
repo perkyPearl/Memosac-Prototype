@@ -10,8 +10,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.744.0",
+    "@aws-sdk/lib-storage": "^3.744.0",
+    "aws-sdk": "^2.1692.0",
+    "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "methods": "^1.1.2",
+    "fs": "^0.0.1-security",
+    "mongoose": "^8.10.0",
+    "multer": "^1.4.5-lts.1",
     "nodemon": "^3.1.9"
   }
 }
