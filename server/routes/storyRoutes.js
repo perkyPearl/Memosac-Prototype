@@ -13,7 +13,7 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
 // 📌 Define API Routes
-router.post("/create", upload.single("media"), createStory); // Create a new story
+router.post("/", upload.single("media"), createStory); // Create a new story
 router.get("/", getAllStories); // Fetch all stories
 
 module.exports = router;

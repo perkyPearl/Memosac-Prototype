@@ -5,24 +5,28 @@ const fs = require("fs");
 
 exports.createStory = async (req, res) => {
     try {
-        const { description, font, isBold, isItalic, isUnderline } = req.body;
-         if (!req.file) {
-             return res.status(400).json({ error: "No file uploaded" });
-         }
+        if (!req.file) {
+            return res.status(400).json({ error: "No file uploaded" });
+        }
+
         const storageDir = path.join(__dirname, "../uploads");
+        if (!fs.existsSync(storageDir)) {
+            fs.mkdirSync(storageDir, { recursive: true });
+        }
 
-         if (!fs.existsSync(storageDir)) {
-             fs.mkdirSync(storageDir, { recursive: true });
-         }
+        // 📌 Store the uploaded file
         const storedFilePaths = await storeFilesLocally([req.file], storageDir);
+        const mediaPath = `/uploads/${path.basename(storedFilePaths[0])}`;
 
+        console.log(
+            "📌 Description received from frontend:",
+            req.body.description
+        ); // ✅ Debugging Line
+
+        // 📌 Create a new story
         const newStory = new Story({
-            media: storedFilePaths[0], // Path to the stored file
-            description,
-            font,
-            isBold,
-            isItalic,
-            isUnderline,
+            media: mediaPath,
+            description: req.body.description || "<p>No Description</p>",
         });
 
         await newStory.save();

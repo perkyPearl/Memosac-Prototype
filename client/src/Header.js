@@ -1,12 +1,13 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState,useRef } from "react";
 import { UserContext } from "./UserContext";
 import "./styles/App.css";
 
 export default function Header() {
   const { setUserInfo, userInfo } = useContext(UserContext);
   const navigate = useNavigate();
-  const [dropdownOpen, setDropdownOpen] = useState(true);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
     fetch("http://localhost:4000/profile", {
@@ -52,6 +53,22 @@ export default function Header() {
     }
   }
 
+   useEffect(() => {
+       function handleClickOutside(event) {
+           if (
+               dropdownRef.current &&
+               !dropdownRef.current.contains(event.target)
+           ) {
+               setDropdownOpen(false);
+           }
+       }
+
+       document.addEventListener("mousedown", handleClickOutside);
+       return () => {
+           document.removeEventListener("mousedown", handleClickOutside);
+       };
+   }, []);
+
   return (
     <header className="NavBar">
       <div
@@ -63,40 +80,40 @@ export default function Header() {
       </div>
 
       <nav>
-        {username ? (
-          <>
-            <Link to="/posts">Posts</Link>
-            <Link to="/timecapsule">Time</Link>
-            <Link to="/albums">Memory Vault</Link>
-            <Link to="/gallery">Your Gallery</Link>
-            {/* <Link to="/Profile">Profile</Link> */}
-            <div
-              className="dropdown"
-              onClick={() => logout()}
-              style={{ cursor: "pointer" }}
-            >
-              <>
-                Hey, <b>{username}</b>
-              </>
-              {dropdownOpen && (
-                <div className="dropdown-menu">
-                  <a href="/profile" style={{ cursor: "pointer" }}>
-                    Profile
-                  </a>
-                  <a onClick={logout} style={{ cursor: "pointer" }}>
-                    Logout
-                  </a>
-                </div>
-              )}
-            </div>
-          </>
-        ) : (
-          <>
-            <Link to="/login">Login</Link>
-            <Link to="/register">Register</Link>
-          </>
-        )}
-      </nav>
-    </header>
-  );
+
+                {username ? (
+                    <>
+                    <Link to="/timecapsule">Time Capsule</Link>
+                        <Link to="/create">Posts</Link>
+                        <Link to="/gallery">Public Gallery</Link>
+                        <Link to="/stories">Story</Link>
+                        <div
+                            className="dropdown"
+                            onClick={() => setDropdownOpen(!dropdownOpen)}
+                            ref={dropdownRef} 
+                            style={{ cursor: "pointer" }}>
+                            <span>
+                                Hey, <b>{username}</b>
+                            </span>
+                            {dropdownOpen && (
+                                <div className="dropdown-menu">
+                                    <a
+                                        onClick={logout}
+                                        style={{ cursor: "pointer" }}
+                                        href="/">
+                                        Logout
+                                    </a>
+                                </div>
+                            )}
+                        </div>
+                    </>
+                ) : (
+                    <>
+                        <Link to="/login">Login</Link>
+                        <Link to="/register">Register</Link>
+                    </>
+                )}
+            </nav>
+        </header>
+    );
 }
