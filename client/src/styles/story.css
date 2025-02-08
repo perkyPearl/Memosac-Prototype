@@ -6,27 +6,9 @@
     margin: auto;
 }
 
-.text-options {
-    display: flex;
-    gap: 10px;
-}
-
-.text-options button {
-    padding: 5px;
-    font-weight: bold;
-    border: none;
-    cursor: pointer;
-}
-
-.text-options button.active {
-    background-color: #8b5e3b;
-    /* Vintage brown */
-    color: white;
-}
-
 .story-card {
-    width: 300px;
-    height: 400px;
+    width: 80%;
+    height: 70vh;
     margin: auto;
     perspective: 1000px;
 }
@@ -68,7 +50,7 @@
     font-size: 1.2em;
 }
 .create-story-btn {
-    background-color: #8b5e3b;
+    background-color: #0d0a1f;
     /* Vintage brown */
     color: white;
     padding: 10px 15px;
@@ -77,6 +59,8 @@
     margin-bottom: 10px;
     cursor: pointer;
     border-radius: 5px;
+    width: 10% !important;
+    margin-left:20px;
 }
 
 .create-story-btn:hover {
@@ -87,10 +71,12 @@
     margin-top: 10px;
     padding: 8px 12px;
     border: none;
-    background-color: #4a90e2;
+    background-color: #0f2238;
     color: white;
     cursor: pointer;
     border-radius: 5px;
+    width: 10% !important;
+    margin-left: 20px;
 }
 
 .next-story-btn:hover {

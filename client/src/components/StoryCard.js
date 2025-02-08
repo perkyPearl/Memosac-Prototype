@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "../styles/StoryCard.css";
+import "../styles/story.css";
 const StoryCard = ({ story }) => {
     const [isFlipped, setIsFlipped] = useState(false);
 
